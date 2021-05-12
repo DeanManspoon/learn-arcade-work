@@ -7,29 +7,28 @@ SCREEN_HEIGHT = 480
 MOVEMENT_SPEED = 6
 
 
-
-
-
-
-
-
-
-
-
 class MyGame(arcade.Window):
     def __init__(self, width, height, title):
         
         super().__init__(width, height, title)
         self.set_mouse_visible(True)
         arcade.set_background_color(arcade.color.ASH_GREY)
-        self.player = arcade.Sprite("./zombie_cheer2.png", 0.5)
+        self.player = arcade.Sprite(":resources:/images/animated_characters/female_adventurer/femaleAdventurer_idle.png", 0.5)
+        self.player.center_x = 50
     def on_draw(self):
         arcade.start_render()
         self.player.draw()
 
     def update(self, delta_time):
         self.player.update()
-
+        if self.player.center_x < self.player.width/2:
+            self.player.center_x = self.player.width/2
+        if self.player.center_x > self.player.width - player.width/2:
+            self.player.center_x = self.player.width - player.width/2
+        if self.player.center_y > self.player.height*7:
+            self.player.center_y = self.player.height*7
+        if self.player.center_y < self.player.height/2:
+            self.player.center_y = self.player.height/2
     def on_key_press(self, key, modifiers):
         if key == arcade.key.A:
             self.player.change_x = -MOVEMENT_SPEED
