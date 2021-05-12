@@ -8,33 +8,6 @@ MOVEMENT_SPEED = 6
 
 
 
-# class Player:
-#     def __init__(self, radius):
-        
-#         self.player_sprite = arcade.Sprite("./player_action1.png")
-  
-#         self.radius = radius
- 
-
-#     def draw(self):
-#        self.player_sprite.draw()
-    
-#     def update(self):
-#         self.player_sprite.center_y += self.change_y
-#         self.position_x += self.change_x
-
-#         if self.position_x < self.radius:
-#             self.position_x = self.radius
-
-#         if self.position_x > SCREEN_WIDTH - self.radius:
-#             self.position_x = SCREEN_WIDTH - self.radius
-
-#         if self.player_sprite.center_y < self.radius:
-#             self.player_sprite.center_y = self.radius
-
-#         if self.player_sprite.center_y > SCREEN_HEIGHT - self.radius:
-#             self.player_sprite.center_y = SCREEN_HEIGHT - self.radius
-
 
 
 
