@@ -2,33 +2,37 @@ import arcade
 import random
 
 
-SCREEN_WIDTH = 600
-SCREEN_HEIGHT = 480
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
 MOVEMENT_SPEED = 6
 
 
 class MyGame(arcade.Window):
     def __init__(self, width, height, title):
-        
         super().__init__(width, height, title)
         self.set_mouse_visible(True)
         arcade.set_background_color(arcade.color.ASH_GREY)
-        self.player = arcade.Sprite(":resources:/images/animated_characters/female_adventurer/femaleAdventurer_idle.png", 0.5)
+        self.player = arcade.Sprite("New Piskel-1.png.png", 1)
         self.player.center_x = 50
+
+
     def on_draw(self):
         arcade.start_render()
         self.player.draw()
 
     def update(self, delta_time):
-        self.player.update()
         if self.player.center_x < self.player.width/2:
             self.player.center_x = self.player.width/2
-        if self.player.center_x > self.player.width - player.width/2:
-            self.player.center_x = self.player.width - player.width/2
-        if self.player.center_y > self.player.height*7:
-            self.player.center_y = self.player.height*7
+        if self.player.center_x > SCREEN_WIDTH - self.player.width/2:
+            self.player.center_x = SCREEN_WIDTH - self.player.width/2
+        if self.player.center_y > self.player.height*18:
+            self.player.center_y = self.player.height*18
         if self.player.center_y < self.player.height/2:
             self.player.center_y = self.player.height/2
+                
+        self.player.update()
+
+
     def on_key_press(self, key, modifiers):
         if key == arcade.key.A:
             self.player.change_x = -MOVEMENT_SPEED
@@ -51,9 +55,10 @@ class MyGame(arcade.Window):
         elif button == arcade.MOUSE_BUTTON_RIGHT:
             print(x, y)
 
-def main():
 
-    
-    window = MyGame(600, 480, "Yeah boi")
+def main():
+    window = MyGame(800, 600, "Yeah boi")
     arcade.run()
+
+
 main()
