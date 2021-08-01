@@ -10,109 +10,11 @@ SCREEN_HEIGHT = 600
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-MOVEMENT_SPEED = 10
+MOVEMENT_SPEED = 5
 
 VIEWPORT_MARGIN = 200
 
 
-class MyGame(arcade.Window):
-    """ This class represents the main window of the game. """
-
-    def __init__(self):
-        """ Initializer """
-
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "New Piskel-1.png.png")
-        
-      
-        self.player_list = None
-        self.wall_list = None
-        self.score = 0
-        
-        self.player_sprite = None
-
-    def setup(self):
-        self.player_list = arcade.SpriteList()
-        self.player_sprite = arcade.Sprite("New Piskel-1.png.png", 1)
-        self.player_sprite.center_x = 350
-        self.player_sprite.center_y = 600
-        self.player_list.append(self.player_sprite)
-        arcade.set_background_color(arcade.color.AMAZON)
-
-      
-        self.wall_list = arcade.SpriteList()
-
-      
-        self.score = 0
-
-        wall = arcade.Sprite("tinyshroom_red.png", SPRITE_SCALING_BOX)
-        wall.center_x = 300
-        wall.center_y = 200
-        self.wall_list.append(wall)
-
-       
-        wall = arcade.Sprite("tinyshroom_red.png", SPRITE_SCALING_BOX)
-        wall.center_x = 364
-        wall.center_y = 200
-        self.wall_list.append(wall)
-
-        for x in range(450, 450, 450):
-            wall = arcade.Sprite("tinyshroom_red.png", SPRITE_SCALING_BOX)
-            wall.center_x = x
-            wall.center_y = 350
-            self.wall_list.append(wall)
-
-    
-        coordinate_list = [[400, 500],
-                           [470, 500],
-                           [400, 570],
-                           [470, 570]]
-
-    
-        for coordinate in coordinate_list:
-            wall = arcade.Sprite("tinyshroom_red.png", SPRITE_SCALING_BOX)
-            wall.center_x = coordinate[0]
-            wall.center_y = coordinate[1]
-            self.wall_list.append(wall)
-
-    def update(self, delta_time):
-        if self.player_sprite.center_x < self.player_sprite.width/2:
-            self.player_sprite.center_x = self.player_sprite.width/2
-        if self.player_sprite.center_x > SCREEN_WIDTH - self.player_sprite.width/2:
-            self.player_sprite.center_x = SCREEN_WIDTH - self.player_sprite.width/2
-        if self.player_sprite.center_y > self.player_sprite.height*18:
-            self.player_sprite.center_y = self.player_sprite.height*18
-        if self.player_sprite.center_y < self.player_sprite.height/2:
-            self.player_sprite.center_y = self.player_sprite.height/2
-        touching = arcade.check_for_collision_with_list(self.player_sprite, self.wall_list)
-        for shroom in touching:
-            shroom.kill()
-            self.score += 1
-        self.player_sprite.update()
-
-
-    def on_key_press(self, key, modifiers):
-        if key == arcade.key.LEFT:
-            self.player_sprite.change_x = -MOVEMENT_SPEED
-        elif key == arcade.key.RIGHT: 
-            self.player_sprite.change_x = MOVEMENT_SPEED
-        elif key == arcade.key.UP:
-            self.player_sprite.change_y = MOVEMENT_SPEED
-        elif key == arcade.key.DOWN:   
-            self.player_sprite.change_y = -MOVEMENT_SPEED
-
-    def on_key_release(self, key, modifiers):
-        if key == arcade.key.A or key == arcade.key.D:
-            self.player_sprite.change_x = 0
-        if key == arcade.key.W or key == arcade.key.S:   
-            self.player_sprite.change_y = 0
-
-    def on_mouse_press(self, x, y, button, modifiers):
-        if button == arcade.MOUSE_BUTTON_LEFT:
-            print(x, y)
-        elif button == arcade.MOUSE_BUTTON_RIGHT:
-            print(x, y)
-
-    IEWPORT_MARGIN = 150
 
 
 class MyGame(arcade.Window):
@@ -126,7 +28,7 @@ class MyGame(arcade.Window):
         self.player_list = None
         self.wall_list = None
 
-
+        self.shrooms_list = None
         self.player_sprite = None
 
 
@@ -138,7 +40,7 @@ class MyGame(arcade.Window):
 
     def setup(self):
 
-        arcade.set_background_color(arcade.color.AMAZON)
+        arcade.set_background_color(arcade.color.BANANA_YELLOW)
 
         self.view_left = 0
         self.view_bottom = 0
@@ -147,6 +49,25 @@ class MyGame(arcade.Window):
         self.player_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()
         self.score = 0
+        self.shrooms_list = arcade.SpriteList()
+        for x in range(20):
+            shrooms = arcade.Sprite("tinyshroom_red.png", SPRITE_SCALING_BOX)
+            shrooms.center_x = random.randint(1, SCREEN_WIDTH)
+            shrooms.center_y = random.randint(1, SCREEN_HEIGHT)
+            self.shrooms_list.append(shrooms)
+
+    
+        coordinate_list = [[300, 300],
+                           [370, 300],
+                           [200, 370],
+                           [270, 370]]
+
+    
+        for coordinate in coordinate_list:
+            shrooms = arcade.Sprite("tinyshroom_red.png", SPRITE_SCALING_BOX)
+            shrooms.center_x = coordinate[0]
+            shrooms.center_y = coordinate[1]
+            self.shrooms_list.append(shrooms)
 
 
 # TODO - replace zombie with own sprite using code up top line 39
@@ -185,6 +106,7 @@ class MyGame(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
+        self.shrooms_list.draw()
         self.wall_list.draw()
         self.player_list.draw()
 
@@ -224,6 +146,12 @@ class MyGame(arcade.Window):
                                 self.view_bottom,
                                 SCREEN_HEIGHT + self.view_bottom - 1)
 
+        touching = arcade.check_for_collision_with_list(self.player_sprite, self.shrooms_list)
+        for shroom in touching:
+            shroom.kill()
+            self.score += 1
+        self.player_sprite.update()
+
     def on_key_press(self, key, modifiers):
         if key == arcade.key.A:
             self.player_sprite.change_x = -MOVEMENT_SPEED
@@ -244,15 +172,8 @@ class MyGame(arcade.Window):
         arcade.start_render()
         self.wall_list.draw()
         self.player_list.draw()
-        arcade.draw_text(str(self.score), SCREEN_WIDTH/2, SCREEN_HEIGHT/2, arcade.color.YELLOW)                                                                   
-
-        if self.score == 14:
-            for i in range(50):
-                wall = arcade.Sprite("tinyshroom_red.png", SPRITE_SCALING_BOX)
-                wall.center_x = random.randint(0, SCREEN_WIDTH)
-                wall.center_y = random.randint(0, SCREEN_HEIGHT)
-                self.wall_list.append(wall)
-
+        arcade.draw_text(str(self.score), SCREEN_WIDTH/2, SCREEN_HEIGHT/2, arcade.color.BLACK)                                                                   
+        self.shrooms_list.draw()
 
 def main():
     """ Main method """
